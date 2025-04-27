@@ -1,0 +1,149 @@
+#!/bin/bash
+
+cmd="$1"
+shift
+args="$@"
+
+pass=0
+
+run_test(){
+	num=$1
+	expected=$2
+	got=$("$cmd" "$args")
+	if cmp -s <(echo $got) <(echo $expected); then
+		echo "Test #$num: $(printf '\e[1;32mPASS\e[0m')"
+		pass=$((pass + 1))
+	else
+		echo "Test #$num: $(printf '\e[1;31mFAIL\e[0m') Expected: $expected, got: $got"
+	fi
+}
+
+run_test 1 $'
+Major
+Major
+Major
+Major
+Major
+Major
+' <<EOD
+C E G
+C G E
+E C G
+E G C
+G E C
+G C E
+EOD
+
+run_test 2 $'
+Minor
+Minor
+Minor
+Minor
+Minor
+Minor
+' <<EOD
+Ab Cb Eb
+Ab Eb Cb
+Cb Eb Ab
+Cb Ab Eb
+Eb Ab Cb
+Eb Cb Ab
+EOD
+
+run_test 3 $'
+
+
+
+
+
+
+' <<EOD
+A B C
+D E F
+A# C# G
+Fb C# D
+C# C# C#
+C F# G
+EOD
+
+run_test 4 $'
+Minor
+Minor
+Minor
+Minor
+Minor
+Minor
+Minor
+Minor
+Minor
+Minor
+Minor
+Minor
+Major
+Major
+Major
+Major
+Major
+Major
+Major
+Major
+Major
+Major
+Major
+Major
+' <<EOD
+C Eb G
+C D# G
+C G Eb
+C G D#
+G Eb C
+G D# C
+G C Eb
+G C D#
+Eb C G
+D# C G
+Eb G C
+D# G C
+C E G
+C Fb G
+C G E
+C G Fb
+G E C
+G Fb C
+G C E
+G C Fb
+E C G
+Fb C G
+E G C
+Fb G C
+EOD
+
+run_test 5 $'
+Major
+Minor
+
+Minor
+Major
+Minor
+Major
+Minor
+Minor
+
+
+
+' <<EOD
+C E G
+F Ab C
+C Eb Gb
+E G B
+Db F Ab
+Bb G D
+D A Gb
+G# Cb Eb
+C# Gb A
+D# F# A
+Eb Gb A
+A F# Eb
+EOD
+
+echo "$pass/$num passed"
